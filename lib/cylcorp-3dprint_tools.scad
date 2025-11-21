@@ -23,6 +23,15 @@ module round_hole(d=1, h=1, countersink=false) {
     }
 }
 
+module diamond_hole(d=1, h=1) {
+    //translate([0, 0, -h*3])
+    // Main hole cutter
+    rotate([0, 0, 45])
+    translate([-d/2, d/2, -h+PT3D_J])
+    rotate([90, 0, 0])
+    cube([d, h+PT3D_J, d]);
+}
+
 module teardrop_hole(d=1, h=1) {
     translate([0, 0, -h])
     hull() {
@@ -75,7 +84,8 @@ module teardrop_hole_m3(h) {teardrop_hole(d=3.2, h=h);}
 module sawtooth_hole_m3(h) {sawtooth_hole(d=3.2, h=h);}
 
 // Demonstrations
-translate([ 0, 0, 0]) round_hole();
+translate([ 0, 0, 0]) diamond_hole();
+translate([ -5, 0, 0]) round_hole();
 translate([ 0, 5, 0]) round_hole(countersink=true);
 
 translate([ 5, 0, 0]) teardrop_hole();

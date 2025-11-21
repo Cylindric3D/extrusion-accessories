@@ -2,12 +2,13 @@ include <extrusionProfile.scad>
 use <cylcorp-3dprint_tools.scad>
 
 M3 = 3.2;
+M4 = 4.3;
 
 thickness=3;
 width=30;
 top_length=30;
-extrusion_holes=2;
-bolt_size=3.2;
+extrusion_holes=1;
+bolt_size=M4;
 
 screw_size=3;
 screw_holes_x=2;
@@ -16,6 +17,12 @@ screw_hole_countersink=true;
 j=0.1;
 
 $fn=50;
+
+function M(size) =
+    size == 3 ? M3 :
+    size == 4 ? M4 :
+    size;
+
 
 module VSlotWedge(locator_scale=1.0) {
     slot_wedge_depth=1.0;
@@ -33,7 +40,7 @@ module VSlotWedge(locator_scale=1.0) {
     }
 }
 
-module Bracket2020U(extend_down=0, locator_scale=1.0) {
+module Bracket2020U(extend_down=0, locator_scale=1.0, hole_size=M3) {
     extrusion_thickness=20;
     screw_tab_stickout=10;
 
@@ -92,19 +99,20 @@ module Bracket2020U(extend_down=0, locator_scale=1.0) {
             // side holes
             translate([(width/(extrusion_holes+1))*i, -thickness, extrusion_thickness/2])
             rotate([90, 0, 0])
-            teardrop_hole(d=M3, h=100); // 100 just makes sure it goes through all
+            diamond_hole(d=bolt_size, h=100); // 100 just makes sure it goes through all
 
             // bottom holes
             translate([(width/(extrusion_holes+1))*i, extrusion_thickness/2, 0])
             union() {
                 // counterbore
-                translate([0, 0, -extend_down-thickness-j])
-                cylinder(d=screw_size+4, h=extend_down+j);
+                translate([0, 0, -extend_down-thickness])
+                rotate([180, 0, 0])
+                diamond_hole(d=bolt_size+4, h=extend_down+j);
 
                 // hole
                 translate([0, 0, -thickness])
                 rotate([180, 0, 0])
-                round_hole(d=screw_size, h=100, countersink=false);
+                round_hole(d=bolt_size, h=100, countersink=false);
             }
         }
 
@@ -126,7 +134,7 @@ module Bracket2020U(extend_down=0, locator_scale=1.0) {
     }
 }
 
-module Bracket2020(extend_down=0) {
+module Bracket2020(extend_down=0, hole_size=M3) {
     extrusion_thickness=20;
 
     translate([-width/2, 0, -extrusion_thickness/2])
@@ -156,7 +164,7 @@ module Bracket2020(extend_down=0) {
         for(i = [1: 1: extrusion_holes]) {
             translate([(width/(extrusion_holes+1))*i, -thickness, extrusion_thickness/2])
             rotate([90, 0, 0])
-            teardrop_hole(d=M3, h=100); // 100 just makes sure it goes through all
+            teardrop_hole(d=hole_size, h=100); // 100 just makes sure it goes through all
         }
 
         // Screw-holes for baseplate

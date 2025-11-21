@@ -6,4 +6,4 @@ translate([0, 10, 0])
 rotate([0, 90, 0])
 %extrusionProfile(type="positive", size="2020", length=100);
 
-Bracket2020();
+Bracket2020(hole_size=M(4));
