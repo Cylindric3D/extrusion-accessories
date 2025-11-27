@@ -1,8 +1,8 @@
 include <extrusionProfile.scad>
 use <cylcorp-3dprint_tools.scad>
 
-M3 = 3.2;
-M4 = 4.3;
+M3 = 3.4;
+M4 = 4.5;
 
 thickness=3;
 width=30;
